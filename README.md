@@ -10,6 +10,7 @@ seems like a pretty cool idea.
 ## Usage
 ```sh
 $ ./sync          # Sync the repo to <remote>:~/scripts
+$ ./swap          # Create a swap file, needed to build Node on small boxes
 $ ./build-alpine  # Build Alpine Linux
 $ ./build-node    # Build Node.js (run this in tmux, it takes a while)
 ```
