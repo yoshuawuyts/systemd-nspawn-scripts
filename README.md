@@ -14,6 +14,7 @@ $ ./swap          # Create a swap file, needed to build Node on small boxes
 $ ./btrfs         # Format /var/lib/machines as btrfs
 $ ./build-alpine  # Build Alpine Linux
 $ ./build-node    # Build Node.js (run this in tmux, it takes a while)
+$ ./rkt           # Install rkt & acbuild
 ```
 
 ## Todo
