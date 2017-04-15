@@ -1,6 +1,5 @@
 #!/bin/bash -e
-# Creates a systemd-nspawn container with Alpine
-# Source https://gist.github.com/sfan5/52aa53f5dca06ac3af30455b203d3404
+# Adapted from https://gist.github.com/sfan5/52aa53f5dca06ac3af30455b203d3404
 
 MIRROR=http://nl.alpinelinux.org/alpine
 VERSION=v3.5
@@ -12,29 +11,29 @@ if [ "$UID" -ne 0 ]; then
 fi
 
 dest="alpine2"
-node_dest="$dest/root"
+node_dest=${dest}/root
 apkdir=$(mktemp -d)
 hostarch=x86
 [ "$(uname -m)" == x86_64 ] && hostarch=x86_64
 
-wget -qO- "$MIRROR/latest-stable/main/$hostarch/apk-tools-static-$APKTOOLS_VERSION.apk" \
+wget -qO- ${MIRROR}/latest-stable/main/${hostarch}/apk-tools-static-${APKTOOLS_VERSION}.apk \
   | tar -xz -C "$apkdir"
 
-"$apkdir/sbin/apk.static" \
-  -X $MIRROR/$VERSION/main -U \
+"${apkdir}/sbin/apk.static" \
+  -X ${MIRROR}/${VERSION}/main -U \
   --allow-untrusted --root "$dest" \
   --initdb add alpine-base
 
-mkdir -p "$dest"/{etc/apk,root}
-printf 'nameserver 208.67.222.222\nnameserver 2620:0:ccc::2' > "$dest"/etc/resolv.conf
+mkdir -p ${dest}/{etc/apk,root}
+printf 'nameserver 208.67.222.222\nnameserver 2620:0:ccc::2' > ${dest}/etc/resolv.conf
 printf '%s/%s/main\n' $MIRROR $VERSION >"$dest"/etc/apk/repositories
-sed '/tty[0-9]:/ s/^/#/' -i "$dest"/etc/inittab
-printf 'console::respawn:/sbin/getty 38400 console\n' >>"$dest"/etc/inittab
+sed '/tty[0-9]:/ s/^/#/' -i ${dest}/etc/inittab
+printf 'console::respawn:/sbin/getty 38400 console\n' >> ${dest}/etc/inittab
 for s in hostname bootmisc syslog; do
-  ln -s /etc/init.d/$s "$dest"/etc/runlevels/boot/$s
+  ln -s /etc/init.d/${s} ${dest}/etc/runlevels/boot/${s}
 done
 for s in killprocs savecache; do
-  ln -s /etc/init.d/$s "$dest"/etc/runlevels/shutdown/$s
+  ln -s /etc/init.d/${s} ${dest}/etc/runlevels/shutdown/${s}
 done
 
 # copy node build script
