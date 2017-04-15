@@ -1,6 +1,6 @@
 #!/bin/sh
+# Source https://raw.githubusercontent.com/mhart/alpine-node/master/Dockerfile
 
-# from https://raw.githubusercontent.com/mhart/alpine-node/master/Dockerfile
 VERSION='v6.10.2'
 NPM_VERSION='3'
 CONFIG_FLAGS="--fully-static --without-npm"
@@ -20,13 +20,13 @@ apk add --no-cache curl make gcc g++ python linux-headers binutils-gold gnupg li
     grep " node-${VERSION}.tar.xz\$" | sha256sum -c | grep . && \
   tar -xf node-${VERSION}.tar.xz && \
   cd node-${VERSION} && \
-  ./configure --prefix=/usr ${CONFIG_FLAGS} && \
-  make -j$(getconf _NPROCESSORS_ONLN) && \
+  ./configure --prefix=/usr "$CONFIG_FLAGS" && \
+  make -j"$(getconf _NPROCESSORS_ONLN)" && \
   make install && \
   cd / && \
   if [ -x /usr/bin/npm ]; then \
     npm install -g npm@${NPM_VERSION} && \
-    find /usr/lib/node_modules/npm -name test -o -name .bin -type d | xargs rm -rf; \
+    find -0 /usr/lib/node_modules/npm -name test -o -name .bin -type d | xargs rm -rf; \
   fi && \
   apk del curl make gcc g++ python linux-headers binutils-gold gnupg ${DEL_PKGS} && \
   rm -rf ${RM_DIRS} /node-${VERSION}* /usr/share/man /tmp/* /var/cache/apk/* \
