@@ -1,0 +1,14 @@
+#!/bin/sh
+
+img='/var/lib/machines.raw'
+target='/var/lib/machines'
+
+# Create raw device
+sudo fallocate -l 4G "$img"
+sudo losetup loop0 "$img"
+sudo mkfs.btrfs /dev/loop0
+
+# Mount
+mkdir -p "$target"
+sudo mount '/dev/loop0' "$target"
+sudo btrfs filesystem show "$target"

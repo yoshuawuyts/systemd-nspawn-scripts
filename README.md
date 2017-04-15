@@ -11,6 +11,7 @@ seems like a pretty cool idea.
 ```sh
 $ ./sync          # Sync the repo to <remote>:~/scripts
 $ ./swap          # Create a swap file, needed to build Node on small boxes
+$ ./btrfs         # Format /var/lib/machines as btrfs
 $ ./build-alpine  # Build Alpine Linux
 $ ./build-node    # Build Node.js (run this in tmux, it takes a while)
 ```
@@ -18,7 +19,7 @@ $ ./build-node    # Build Node.js (run this in tmux, it takes a while)
 ## Todo
 - [x] Have Alpine Linux working with `systemd-npawn(1)`
 - [x] Have Node.js running in Alpine Linux
-- [ ] Create script to format `/var/lib/machines` as btrfs
+- [x] Create script to format `/var/lib/machines` as btrfs
 - [ ] Create unit file to run `systemd-nspawn(1)` container
 - [ ] Validate logging & reboots inside host machine
 - [ ] Create script to automate unit file creation
