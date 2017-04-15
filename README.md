@@ -18,8 +18,10 @@ $ ./build-node    # Build Node.js (run this in tmux, it takes a while)
 
 ## Todo
 - [x] Have Alpine Linux working with `systemd-npawn(1)`
+- [x] Automate swap file creation
 - [x] Have Node.js running in Alpine Linux
 - [x] Create script to format `/var/lib/machines` as btrfs
+- [x] Update Alpine & Node to be copy-on-write images inside `/var/lib/machines`
 - [ ] Create unit file to run `systemd-nspawn(1)` container
 - [ ] Validate logging & reboots inside host machine
 - [ ] Create script to automate unit file creation

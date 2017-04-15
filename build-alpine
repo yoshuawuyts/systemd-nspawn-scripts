@@ -2,16 +2,23 @@
 # Adapted from https://gist.github.com/sfan5/52aa53f5dca06ac3af30455b203d3404
 
 MIRROR=http://nl.alpinelinux.org/alpine
-VERSION=v3.5
+BARE_VERSION='3.5'
+VERSION="v${BARE_VERSION}"
 APKTOOLS_VERSION=2.6.8-r2
+
+dest="/var/lib/machines/alpine-${BARE_VERSION}"
+node_dest=${dest}/root
 
 if [ "$UID" -ne 0 ]; then
   echo "run this script as root" >&2
   exit 1
 fi
 
-dest="alpine2"
-node_dest=${dest}/root
+if [ -d "$dest" ]; then
+  echo "$dest already exists"
+  exit 1
+fi
+
 apkdir=$(mktemp -d)
 hostarch=x86
 [ "$(uname -m)" == x86_64 ] && hostarch=x86_64
