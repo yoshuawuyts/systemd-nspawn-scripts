@@ -1,0 +1,37 @@
+#!/bin/sh
+
+set -e
+
+id="$(id -u)"
+if [ "$id" -ne 0 ]; then
+  echo "This script uses functionality which requires root privileges"
+  exit 1
+fi
+
+if [ $# -lt 1 ]; then
+  echo "Usage: $0 <git-url>"
+  exit 1
+fi
+
+clean_uri () {
+  echo "$1" \
+    | sed 's|^https://github.com/||' \
+    | tr '/' ' ' \
+    | awk '{print $1 "/" $2}'
+}
+
+# Prepare variables
+_uri="$(clean_uri "$1")"
+
+OUTDIR="${HOME}/images"
+REPO="$(echo "$_uri" | sed 's|.*/||')"
+uri="https://git@github.com/${_uri}.git"
+
+# Clone directory
+mkdir -p "$OUTDIR"
+BUILDDIR="$(mktemp -d "/tmp/${REPO}-XXX")"
+git clone --depth=1 "$uri" "$BUILDDIR"
+
+# Run & clean up after
+sh "${BUILDDIR}/build.sh" "$OUTDIR"
+rm -rf "$BUILDDIR"
