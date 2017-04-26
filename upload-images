@@ -1,0 +1,9 @@
+#!/bin/sh
+remote="$1"
+
+if [ -z "$remote" ]; then
+  echo "Usage: $0 <remote>"
+  exit 1
+fi
+
+rsync -azP "${HOME}/images" "${remote}:~/images"
