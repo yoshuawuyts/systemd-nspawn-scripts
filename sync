@@ -6,4 +6,4 @@ if [ -z "$remote" ]; then
   exit 1
 fi
 
-rsync -azP . "$remote:~/scripts" --exclude '.git/*' --delete
+rsync -azP . "$remote:~/scripts" --exclude '.git/*'
